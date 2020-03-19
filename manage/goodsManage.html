@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品管理</title>
+    <style>
+        table{
+            border-collapse: collapse;
+            width:100%;
+        }
+        tr,td{
+            border:1px solid #333;
+            width:10%;
+            text-align:center;
+            overflow:hidden;
+        }
+    </style>
+    <script src="./js/baiduTemplate.js"></script>
+</head>
+<body>
+    <form id="myGood" name="goodForm">
+        <input hidden type="text" name="id">
+        <p>商品标题：<input type="text" name="goodTitle"></p>
+        <p>商品类别：
+            <select name="goodType">
+                <option value="1">热门手机回收</option>
+                <option value="2">优品精选</option>
+                <option value="3">媒体报道</option>
+            </select>
+        </p>
+        <p>商品图片：<input onchange="changeImg(this)" type="file" name="goodPic">
+            <img width="100" alt="" src="">
+        </p>
+        <p>商品链接：<input type="text" name="goodHref"></p>
+        <p>商品排序：<input type="number" name="orderBy"></p>
+        <p><input type="button" id="btn" value="提交"></p>
+    </form>
+    <hr>
+    <div id="search">
+        <input type="button" value="全部">
+        <input type="button" value="轮播图">
+        <input type="button" value="轮播图底部">
+        <input type="button" value="热门回收">
+        <input type="button" value="优品精选">
+        <input type="text" oninput="getGoodList()" placeholder="请输入广告名称">
+    </div>
+    <div id="myTable"></div>
+    <script type="text/html" id="tp">
+        <table>
+            <tr>
+                <td>id</td>
+                <td>商品标题</td>
+                <td>商品图片</td>
+                <td>商品链接</td>
+                <td>商品类别</td>
+                <td>商品排序</td>
+                <td>添加时间</td>
+                <td>修改时间</td>
+                <td>操作</td>
+            </tr>
+            <%for(let i=0;i<goodList.length;i++){%>
+            <tr>
+                <td><%=goodList[i]._id%></td>
+                <td><%=goodList[i].goodTitle%></td>
+                <td><img height="100" src="<%=goodList[i].goodPic%>" alt=""></td>
+                <td><%=goodList[i].goodHref%></td>
+                <td><%=goodTypeEnum[goodList[i].goodType]%></td>
+                <td><%=goodList[i].orderBy%></td>
+                <td><%=goodList[i].addTime%></td>
+                <td><%=goodList[i].upTime%></td>
+                <td>
+                    <a href="javascript:;" onclick="goodInfoById('<%= goodList[i]._id%>')">修改</a>
+                    <a href="javascript:;" onclick="goodInfoById('<%= goodList[i]._id%>')">删除</a>
+                </td>
+            </tr>
+            <%}%>
+        </table>
+        <div>
+            <%if(pageIndex > 1){%>
+                <a href="javascript:;" onclick="getGoodList(<%= pageIndex-1%>)">上一页</a>
+            <%}%>
+            <%= pageIndex%>/<%= pageSum%>
+            <%if(pageIndex < pageSum){%>
+            <a href="javascript:;" onclick="getGoodList(<%= pageIndex+1%>)">下一页</a>
+            <%}%>
+        </div>
+    </script>
+    <script src="./js/goodsmanage.js"></script>
+</body>
+</html>

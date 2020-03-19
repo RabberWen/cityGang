@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告管理</title>
+    <style>
+        table{
+            border-collapse: collapse;
+            width:100%;
+        }
+        tr,td{
+            border:1px solid #333;
+            width:10%;
+            text-align:center;
+            overflow:hidden;
+        }
+    </style>
+    <script src="./js/baiduTemplate.js"></script>
+</head>
+<body>
+    <form id="myAdv" name="advForm">
+        <input hidden type="text" name="id">
+        <p>广告标题：<input type="text" name="advTitle"></p>
+        <p>广告类别：
+            <select name="advType">
+                <option value="1">轮播图</option>
+                <option value="2">轮播图底部</option>
+                <option value="3">热门回收</option>
+                <option value="4">优品精选</option>
+            </select>
+        </p>
+        <p>广告图片：<input onchange="changeImg(this)" type="file" name="advPic">
+            <img width="100" alt="" src="">
+        </p>
+        <p>广告链接：<input type="text" name="advHref"></p>
+        <p>广告排序：<input type="number" name="orderBy"></p>
+        <p><input type="button" id="btn" value="提交"></p>
+    </form>
+    <hr/>
+    <div id="search">
+        <input type="button" value="全部">
+        <input type="button" value="轮播图">
+        <input type="button" value="轮播图底部">
+        <input type="button" value="热门回收">
+        <input type="button" value="优品精选">
+        <input type="text" oninput="getAdvList()" placeholder="请输入广告名称">
+    </div>
+    <hr/>
+    <div id="myTable"></div>
+    <script type="text/html" id="tp">
+        <table>
+            <tr>
+                <td>id</td>
+                <td>广告标题</td>
+                <td>广告图片</td>
+                <td>广告链接</td>
+                <td>广告类别</td>
+                <td>广告排序</td>
+                <td>添加时间</td>
+                <td>修改时间</td>
+                <td>操作</td>
+            </tr>
+            <%for(let i=0;i<advList.length;i++){%>
+            <tr>
+                <td><%=advList[i]._id%></td>
+                <td><%=advList[i].advTitle%></td>
+                <td><img height="100" src="<%=advList[i].advPic%>" alt=""></td>
+                <td><%=advList[i].advHref%></td>
+                <td><%=advTypeEnum[advList[i].advType]%></td>
+                <td><%=advList[i].orderBy%></td>
+                <td><%=advList[i].addTime%></td>
+                <td><%=advList[i].upTime%></td>
+                <td>
+                    <a href="javascript:;" onclick="advInfoById('<%= advList[i]._id%>')">修改</a>
+                    <a href="javascript:;" onclick="advInfoById('<%= advList[i]._id%>')">删除</a>
+                </td>
+            </tr>
+            <%}%>
+        </table>
+        <div>
+            <%if(pageIndex > 1){%>
+                <a href="javascript:;" onclick="getAdvList(<%= pageIndex-1%>)">上一页</a>
+            <%}%>
+            <%= pageIndex%>/<%= pageSum%>
+            <%if(pageIndex < pageSum){%>
+            <a href="javascript:;" onclick="getAdvList(<%= pageIndex+1%>)">下一页</a>
+            <%}%>
+        </div>
+    </script>
+    <script src="./js/advmanage.js"></script>
+</body>
+</html>
